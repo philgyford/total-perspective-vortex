@@ -68,7 +68,7 @@
 
       data.push({
         'name': 'Everyone on Earth',
-        'size': 7442000000
+        'size': 7600000000
       });
 
       return data;
