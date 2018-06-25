@@ -27,7 +27,8 @@ body {
 }
 
 .shape{
-  fill: #eee;
+  fill: #000;
+  opacity: 0.1;
   /* stroke: #0c0;
   stroke-width: 1px; */
 }
@@ -36,7 +37,7 @@ body {
 }
 
 
-.js-shape-0 {
+/* .js-shape-0 {
   fill: red;
 }
 .js-shape-1 {
@@ -47,4 +48,4 @@ body {
 }
 .js-shape-3 {
   fill: yellow;
-}
+} */
