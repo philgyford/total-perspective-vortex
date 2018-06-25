@@ -1,6 +1,8 @@
 body {
   padding: 0;
   margin: 0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
 }
 .container {
   width: 100vw;
@@ -10,13 +12,19 @@ body {
   display: block;
 }
 
-.label {
+.label-wrapper {
   position: absolute;
   bottom: 30px;
   left: 0;
   width: 100%;
   text-align: center;
   opacity: 1;
+  padding: 0.3em 0;
+}
+.text {
+  background: #000;
+  color: #fff;
+  padding: 0.3em 0.5em;
 }
 .next {
   position: absolute;
@@ -29,9 +37,9 @@ body {
   right: 100px;
 }
 .is-disabled {
-  color: #000;
   text-decoration: none;
   cursor: default;
+  visibility: hidden;
 }
 
 .shape{
