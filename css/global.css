@@ -10,6 +10,14 @@ body {
   display: block;
 }
 
+.label {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  opacity: 1;
+}
 .next {
   position: absolute;
   bottom: 10px;
