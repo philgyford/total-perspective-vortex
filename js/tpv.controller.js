@@ -66,6 +66,11 @@
 
       data.sort(sortBySize);
 
+      data.push({
+        'name': 'Everyone on Earth',
+        'size': 7442000000
+      });
+
       return data;
     };
 
