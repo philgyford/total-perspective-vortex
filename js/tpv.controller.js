@@ -48,7 +48,6 @@
       var prevLink = d3.select('.js-prev');
 
       if (currentIdx == shapes.length-2) {
-        console.log('disabling next');
         nextLink.classed('is-disabled', true);
       };
 
