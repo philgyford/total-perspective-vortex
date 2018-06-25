@@ -16,6 +16,8 @@
 
     var transitionSpeed = 1000;
 
+    var isAnimating = false;
+
     var container = d3.select('.js-container');
 
     var windowW = container.node().getBoundingClientRect().width;
@@ -40,13 +42,13 @@
         addShape(n);
       };
 
-      showLabel();
+      showControls();
 
       d3.select('.js-next')
           .on('click', function() { return step('next'); });
 
       d3.select('.js-prev')
-          .on('click', function() {console.log('click'); return step('prev'); });
+          .on('click', function() { return step('prev'); });
 
       /**
        * direction is either 'next' or 'prev'.
@@ -54,6 +56,8 @@
       function step(direction) {
 
         if (
+          isAnimating
+          ||
           (direction == 'next' && currentIdx == shapes.length-1)
           ||
           (direction == 'prev' && currentIdx == 0)
@@ -61,10 +65,9 @@
           return;
         };
 
-        var nextLink = d3.select('.js-next');
-        var prevLink = d3.select('.js-prev');
+        isAnimating = true;
 
-        hideLabel();
+        hideControls();
 
         if (direction == 'next') {
           currentIdx++;
@@ -72,17 +75,6 @@
           currentIdx--;
         };
         animateShapes();
-
-        if (currentIdx == shapes.length-1) {
-          nextLink.classed('is-disabled', true);
-        } else {
-          nextLink.classed('is-disabled', false);
-        };
-        if (currentIdx == 0) {
-          prevLink.classed('is-disabled', true);
-        } else {
-          prevLink.classed('is-disabled', false);
-        };
       };
 
       /**
@@ -111,19 +103,30 @@
             .on('end', function(d) {
               if (idx == 0) {
                 // Only need to do this when one of the shapes has finished!
-                showLabel();
+                showControls();
+                isAnimating = false;
               };
             });
       };
 
-      function hideLabel() {
-        d3.select('.js-label')
+      /**
+       * Hide the label and the next/prev links.
+       */
+      function hideControls() {
+        d3.selectAll('.js-control')
             .transition()
               .duration(200)
               .style('opacity', 0);
       };
 
-      function showLabel() {
+      /**
+       * Display the label and next/prev links.
+       * Set the label text for the current shape.
+       */
+      function showControls() {
+
+        setButtonStyles();
+
         var d = data[currentIdx];
         var format = d3.format(',');
         var noun = 'people';
@@ -133,10 +136,32 @@
         };
 
         d3.select('.js-label')
-            .text(d.name + ': ' + format(d.size) + ' ' + noun)
+            .text(d.name + ': ' + format(d.size) + ' ' + noun);
+
+        d3.selectAll('.js-control')
             .transition()
               .duration(200)
               .style('opacity', 1);
+      };
+
+      /**
+       * Set whether the next/prev links should be disabled or not.
+       */
+      function setButtonStyles() {
+
+        var nextLink = d3.select('.js-next');
+        var prevLink = d3.select('.js-prev');
+
+        if (currentIdx == shapes.length-1) {
+          nextLink.classed('is-disabled', true);
+        } else {
+          nextLink.classed('is-disabled', false);
+        };
+        if (currentIdx == 0) {
+          prevLink.classed('is-disabled', true);
+        } else {
+          prevLink.classed('is-disabled', false);
+        };
       };
 
       /**
