@@ -1,0 +1,50 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+.container {
+  width: 100vw;
+  height: 100vh;
+}
+.svg {
+  display: block;
+}
+
+.next {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.prev {
+  position: absolute;
+  bottom: 10px;
+  right: 100px;
+}
+.is-disabled {
+  color: #000;
+  text-decoration: none;
+  cursor: default;
+}
+
+.shape{
+  fill: #eee;
+  /* stroke: #0c0;
+  stroke-width: 1px; */
+}
+.shape-container {
+  fill: none;
+}
+
+
+.js-shape-0 {
+  fill: red;
+}
+.js-shape-1 {
+  fill: green;
+}
+.js-shape-2 {
+  fill: blue;
+}
+.js-shape-3 {
+  fill: yellow;
+}
