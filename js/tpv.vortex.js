@@ -33,6 +33,11 @@
     var transitionSpeed = 1000;
 
     /**
+     * Opacity for shapes that aren't currently 'in focus'.
+     */
+    var unfocusedOpacity = 0.1;
+
+    /**
      * True when we're zooming in or out.
      */
     var isAnimating = false;
@@ -125,11 +130,23 @@
         var shape = shapes[idx];
         var dim = getShapeDimensions(idx);
 
+        // For those not-yet-zoomed-into:
+        var opacity = unfocusedOpacity;
+        if (idx == currentIdx) {
+          // Highlight current shape.
+          opacity = 1;
+        } else if (idx < currentIdx) {
+          // Those we've zoomed past.
+          // A bit visible, but not much.
+          opacity = unfocusedOpacity * 3;
+        };
+
         if (shapeType == 'circle') {
           // cx and cy stay the same.
           shape.transition()
               .duration(transitionSpeed)
               .attr('r', dim['r'])
+              .style('opacity', opacity)
               .on('end', finished);
 
         } else {
@@ -139,6 +156,7 @@
               .attr('y', dim['y'])
               .attr('width', dim['w'])
               .attr('height', dim['h'])
+              .style('opacity', opacity)
               .on('end', finished);
         };
       };
@@ -205,13 +223,14 @@
       function addShape(idx) {
 
         var dim = getShapeDimensions(idx);
+        var opacity = idx == currentIdx ? 1 : unfocusedOpacity;
         var shape;
 
         if (shapeType == 'circle') {
-          shape = drawCircle(idx, dim['cx'], dim['cy'], dim['r'], data[idx].color);
+          shape = drawCircle(idx, dim['cx'], dim['cy'], dim['r'], data[idx].color, opacity);
 
         } else {
-          shape = drawRect(idx, dim['x'], dim['y'], dim['w'], dim['h'], data[idx].color);
+          shape = drawRect(idx, dim['x'], dim['y'], dim['w'], dim['h'], data[idx].color, opacity);
         };
 
         shapes.unshift(shape);
@@ -280,7 +299,7 @@
        * x, y, (for the top-left point), width and height and fill color.
        * Returns the object appended.
        */
-      function drawRect(idx, x, y, w, h, color) {
+      function drawRect(idx, x, y, w, h, color, opacity) {
         return svg.append('rect')
                     .classed('js-shape-'+idx, true)
                     .classed('shape', true)
@@ -288,18 +307,21 @@
                     .attr('y', y)
                     .attr('width', w)
                     .attr('height', h)
-                    .attr('fill', color);
+                    .attr('fill', color)
+                    .style('opacity', opacity);
       };
 
-      function drawCircle(idx, cx, cy, r, color) {
+      function drawCircle(idx, cx, cy, r, color, opacity) {
         return svg.append('circle')
                     .classed('js-shape-'+idx, true)
                     .classed('shape', true)
                     .attr('cx', cx)
                     .attr('cy', cy)
                     .attr('r', r)
-                    .attr('fill', color);
+                    .attr('fill', color)
+                    .style('opacity', opacity);
       };
+
     };
 
     chart.data = function(value) {
