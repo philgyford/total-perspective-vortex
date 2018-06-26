@@ -8,7 +8,8 @@
      * Can (and should) be changed using the chart.data() method.
      * This will be replaced by any data passed to the chart.data() method:
      * Each element should be like:
-     * {'size': 123, 'name': 'My label here'}
+     * {'size': 123, 'name': 'My label here', 'color': '#ff0000'}
+     * Should be in order, with the smallest 'size' element first.
      */
     var data = [];
 
@@ -20,7 +21,7 @@
 
     /**
      * Which shape is currently the focused one? Its index within both
-     * shapes and data.
+     * shapes and data. Will be set below...
      */
     var currentIdx = 0;
 
@@ -51,8 +52,14 @@
 
     function chart() {
 
+      // We expect the data in order of smallest-to-largest, because that
+      // makes most sense.
+      // But we need to reverse it so we can draw the shapes in the correct
+      // order, from big-to-small, back-to-front.
       data.reverse();
 
+      // And so we start with what is now the final element in data, which is
+      // the smallest size/shape:
       currentIdx = data.length - 1;
 
       // Fill the browser window.
@@ -161,6 +168,7 @@
       };
 
       /**
+       * A next/previous link has been clicked.
        * direction is either 'next' or 'prev'.
        */
       function step(direction) {
