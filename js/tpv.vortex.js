@@ -24,12 +24,6 @@
      */
     var currentIdx = 0;
 
-    /**
-     * Will be an array of 'rect's or 'circle's, in the same order as their
-     * related data in the data array.
-     */
-    var shapes = [];
-
     var transitionSpeed = 1000;
 
     /**
@@ -57,24 +51,114 @@
 
     function chart() {
 
+      data.reverse();
+
+      currentIdx = data.length - 1;
+
       // Fill the browser window.
       var svg = container.append('svg')
                   .classed('svg', true)
                   .attr('width', windowW)
                   .attr('height', windowH);
 
-      // Create each shape, from the back (biggest) to the front (smallest).
-      for (var n=data.length-1; n>=0; n--) {
-        addShape(n);
-      };
+      // Create all the circles/rects.
+      svg.selectAll(shapeType)
+          .data(data)
+          .enter()
+          .append(shapeType)
+            .attrs(getShapeAttrs)
+            .attr('class', function(d, i) {
+              return 'shape js-shape-' + i;
+            })
+            .attr('fill', function(d) {
+              return d.color;
+            })
+            .attr('opacity', function(d, i) {
+              return i == currentIdx ? 1 : unfocusedOpacity;
+            });
 
       showControls();
 
-      d3.select('.js-next')
-          .on('click', function() { return step('next'); });
+      startListeners();
 
-      d3.select('.js-prev')
-          .on('click', function() { return step('prev'); });
+      /**
+       * Return an object of attributes for circles/rects related to size and
+       * position. Things that we would animate.
+       */
+      function getShapeAttrs(d, i) {
+        var attrs;
+
+        if (shapeType == 'circle') {
+          attrs = getCircleAttrs(d, i);
+        } else {
+          attrs = getRectAttrs(d, i);
+        };
+
+        return attrs;
+      };
+
+      /**
+       * Return an object containing x, y, width and height attributes for a rect.
+       */
+      function getRectAttrs(d, i) {
+        // How much bigger is this shape compared to the current, focused, one?
+        // e.g. 1 for the currently-focused one.
+        var scaleFactor = ( d.size / data[currentIdx].size );
+
+        // Total area of browser window.
+        // ie what the currently-focused shape's area should be.
+        var windowArea = windowW * windowH;
+
+        var shapeArea = windowArea * scaleFactor;
+
+        var h = Math.sqrt(shapeArea / aspectRatio);
+        var w = Math.round(shapeArea / h);
+        h = Math.round(h);
+
+        var x = -((w - windowW) / 2);
+        var y = -((h - windowH) / 2);
+
+        return {
+          'x': x,
+          'y': y,
+          'width': w,
+          'height': h
+        }
+      };
+
+      /**
+       * Return an object containing cx, cy and r attributes for a circle.
+       */
+      function getCircleAttrs(d, i) {
+        // How much bigger is this shape compared to the current, focused, one?
+        // e.g. 1 for the currently-focused one.
+        var scaleFactor = ( d.size / data[currentIdx].size );
+
+        // The diameter of the currently-focused circle, so it fits:
+        var windowRadius = d3.min([windowW, windowH]) / 2;
+
+        // What the currently-focused shape's area should be.
+        // Like windowArea for rects.
+        var focusedArea = Math.PI * Math.pow(windowRadius, 2);
+
+        var shapeArea = focusedArea * scaleFactor;
+
+        var radius = Math.round(Math.sqrt((shapeArea / Math.PI)));
+
+        return {
+          'cx': centerX,
+          'cy': centerY,
+          'r': radius
+        };
+      };
+
+      function startListeners() {
+        d3.select('.js-next')
+            .on('click', function() { return step('next'); });
+
+        d3.select('.js-prev')
+            .on('click', function() { return step('prev'); });
+      };
 
       /**
        * direction is either 'next' or 'prev'.
@@ -84,9 +168,9 @@
         if (
           isAnimating
           ||
-          (direction == 'next' && currentIdx == shapes.length-1)
+          (direction == 'next' && currentIdx == 0)
           ||
-          (direction == 'prev' && currentIdx == 0)
+          (direction == 'prev' && currentIdx == data.length-1)
         ) {
           return;
         };
@@ -96,9 +180,9 @@
         hideControls();
 
         if (direction == 'next') {
-          currentIdx++;
-        } else {
           currentIdx--;
+        } else {
+          currentIdx++;
         };
         animateShapes();
       };
@@ -108,57 +192,35 @@
        * based on the value of currentIdx.
        */
       function animateShapes() {
-        for (var n=0; n<data.length; n++) {
-          animateShapeForward(n);
-        };
-      };
-
-      /**
-       * Given the index of a shape, transition it to its next, smaller, size.
-       */
-      function animateShapeForward(idx) {
-
         // Run when each transition ends.
-        var finished = function(d) {
-          if (idx == 0) {
+        var finished = function(d, i) {
+          if (i == 0) {
             // Only need to do this when one of the shapes has finished!
             showControls();
             isAnimating = false;
           };
         };
 
-        var shape = shapes[idx];
-        var dim = getShapeDimensions(idx);
+        var getOpacity = function(d, i) {
+          var opacity = unfocusedOpacity;
+          if (i == currentIdx) {
+            // Highlight current shape.
+            opacity = 1;
+          } else if (i > currentIdx) {
+            // Those we've zoomed past.
+            // A bit visible, but not much.
+            opacity = unfocusedOpacity * 3;
+          };
 
-        // For those not-yet-zoomed-into:
-        var opacity = unfocusedOpacity;
-        if (idx == currentIdx) {
-          // Highlight current shape.
-          opacity = 1;
-        } else if (idx < currentIdx) {
-          // Those we've zoomed past.
-          // A bit visible, but not much.
-          opacity = unfocusedOpacity * 3;
+          return opacity;
         };
 
-        if (shapeType == 'circle') {
-          // cx and cy stay the same.
-          shape.transition()
+        svg.selectAll(shapeType)
+            .transition()
               .duration(transitionSpeed)
-              .attr('r', dim['r'])
-              .style('opacity', opacity)
+              .attrs(getShapeAttrs)
+              .attr('opacity', getOpacity)
               .on('end', finished);
-
-        } else {
-          shape.transition()
-              .duration(transitionSpeed)
-              .attr('x', dim['x'])
-              .attr('y', dim['y'])
-              .attr('width', dim['w'])
-              .attr('height', dim['h'])
-              .style('opacity', opacity)
-              .on('end', finished);
-        };
       };
 
       /**
@@ -204,123 +266,38 @@
         var nextLink = d3.select('.js-next');
         var prevLink = d3.select('.js-prev');
 
-        if (currentIdx == shapes.length-1) {
-          nextLink.classed('is-disabled', true);
-        } else {
-          nextLink.classed('is-disabled', false);
-        };
-        if (currentIdx == 0) {
+        if (currentIdx == data.length-1) {
           prevLink.classed('is-disabled', true);
         } else {
           prevLink.classed('is-disabled', false);
         };
-      };
-
-      /**
-       * Given the index of a shape in the shapes array, draws it at its
-       * initial size. Adds it to the shapes array.
-       */
-      function addShape(idx) {
-
-        var dim = getShapeDimensions(idx);
-        var opacity = idx == currentIdx ? 1 : unfocusedOpacity;
-        var shape;
-
-        if (shapeType == 'circle') {
-          shape = drawCircle(idx, dim['cx'], dim['cy'], dim['r'], data[idx].color, opacity);
-
+        if (currentIdx == 0) {
+          nextLink.classed('is-disabled', true);
         } else {
-          shape = drawRect(idx, dim['x'], dim['y'], dim['w'], dim['h'], data[idx].color, opacity);
-        };
-
-        shapes.unshift(shape);
-      };
-
-      /**
-       * Returns the x, y, width and height for a shape of index idx,
-       * based on its relation to currentIdx (the shape that will take up the
-       * full window).
-       *
-       * Returns an object.
-       */
-      function getShapeDimensions(idx) {
-        // How much bigger is this shape compared to the current, focused, one?
-        // e.g. 1 for the currently-focused one.
-        var scaleFactor = ( data[idx].size / data[currentIdx].size );
-
-
-        if (shapeType == 'circle') {
-
-          // The diameter of the currently-focused circle, so it fits:
-          var windowRadius = d3.min([windowW, windowH]) / 2;
-
-          // What the currently-focused shape's area should be.
-          // Like windowArea for rects.
-          var focusedArea = Math.PI * Math.pow(windowRadius, 2);
-
-          var shapeArea = focusedArea * scaleFactor;
-
-          var radius = Math.round(Math.sqrt((shapeArea / Math.PI)));
-
-          return {
-            'cx': centerX,
-            'cy': centerY,
-            'r': radius
-          };
-
-        } else {
-          // Rect.
-
-          // Total area of browser window.
-          // ie what the currently-focused shape's area should be.
-          var windowArea = windowW * windowH;
-
-          var shapeArea = windowArea * scaleFactor;
-
-          var h = Math.sqrt(shapeArea / aspectRatio);
-          var w = Math.round(shapeArea / h);
-          h = Math.round(h);
-
-          var x = -((w - windowW) / 2);
-          var y = -((h - windowH) / 2);
-
-          return {
-            'x': x,
-            'y': y,
-            'w': w,
-            'h': h
-          }
+          nextLink.classed('is-disabled', false);
         };
       };
 
-      /**
-       * Draws a single rect in the svg.
-       * Needs the index of the shape in the shapes array, plus its:
-       * x, y, (for the top-left point), width and height and fill color.
-       * Returns the object appended.
-       */
-      function drawRect(idx, x, y, w, h, color, opacity) {
-        return svg.append('rect')
-                    .classed('js-shape-'+idx, true)
-                    .classed('shape', true)
-                    .attr('x', x)
-                    .attr('y', y)
-                    .attr('width', w)
-                    .attr('height', h)
-                    .attr('fill', color)
-                    .style('opacity', opacity);
-      };
 
-      function drawCircle(idx, cx, cy, r, color, opacity) {
-        return svg.append('circle')
-                    .classed('js-shape-'+idx, true)
-                    .classed('shape', true)
-                    .attr('cx', cx)
-                    .attr('cy', cy)
-                    .attr('r', r)
-                    .attr('fill', color)
-                    .style('opacity', opacity);
-      };
+      // function drawCircle(idx, cx, cy, r, color, opacity) {
+      //
+      //   if (idx == 7) {
+      //     svg.append("defs")
+      //          .append("pattern")
+      //            .attr('patternUnits', 'objectBoundingBox')
+      //            .attr("id", "bg")
+      //            .attr('width', 1)
+      //            .attr('height', 1)
+      //          .append("image")
+      //            .attr("xlink:href", 'img/bluemarble_2014089.jpg')
+      //            .attr('width', 712)
+      //            .attr('height', 712);
+      //
+      //     shape.attr('fill', 'url(#bg)');
+      //   };
+      //
+      //   return shape;
+      // };
 
     };
 
