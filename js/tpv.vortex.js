@@ -72,21 +72,69 @@
       svg.selectAll(shapeType)
           .data(data)
           .enter()
-          .append(shapeType)
-            .attrs(getShapeAttrs)
-            .attr('class', function(d, i) {
-              return 'shape js-shape-' + i;
-            })
-            .attr('fill', function(d) {
+        .append(shapeType)
+          .attrs(getShapeAttrs)
+          .attr('class', function(d, i) {
+            return 'shape js-shape-' + i;
+          })
+          .attr('fill', function(d, i) {
+            if (d.background) {
+              return 'url(#bg-' + i + ')';
+            } else {
               return d.color;
-            })
-            .attr('opacity', function(d, i) {
-              return i == currentIdx ? 1 : unfocusedOpacity;
-            });
+            };
+          })
+          .attr('opacity', function(d, i) {
+            return i == currentIdx ? 1 : unfocusedOpacity;
+          });
+
+      svg.selectAll('pattern')
+          .data(data)
+          .enter()
+        .append('pattern')
+          .attr('patternUnits', 'objectBoundingBox')
+          .attr('id', function(d, i) {
+            return 'bg-'+i;
+          })
+          .attr('width', 1)
+          .attr('height', 1)
+        .append("image")
+          .attr("xlink:href", function(d, i) {
+            if (d.background) {
+              return d.background;
+            };
+          })
+          .attrs(getPatternAttrs);
+
 
       showControls();
 
       startListeners();
+
+      /**
+       * Return an object of width and height attributes used to size the
+       * background images for circles/rects.
+       */
+      function getPatternAttrs(d, i) {
+        if ( ! d.background) {
+          return {};
+        };
+
+        var attrs = getShapeAttrs(d, i);
+
+        if (shapeType == 'circle') {
+          return {
+            'width': attrs['r'] * 2,
+            'height': attrs['r'] * 2,
+          };
+
+        } else {
+          return {
+            'width': attrs['width'],
+            'height': attrs['height'],
+          };
+        };
+      };
 
       /**
        * Return an object of attributes for circles/rects related to size and
@@ -229,6 +277,13 @@
               .attrs(getShapeAttrs)
               .attr('opacity', getOpacity)
               .on('end', finished);
+
+
+        svg.selectAll('pattern')
+            .selectAll('image')
+            .transition()
+              .duration(transitionSpeed)
+              .attrs(getPatternAttrs);
       };
 
       /**
@@ -285,27 +340,6 @@
           nextLink.classed('is-disabled', false);
         };
       };
-
-
-      // function drawCircle(idx, cx, cy, r, color, opacity) {
-      //
-      //   if (idx == 7) {
-      //     svg.append("defs")
-      //          .append("pattern")
-      //            .attr('patternUnits', 'objectBoundingBox')
-      //            .attr("id", "bg")
-      //            .attr('width', 1)
-      //            .attr('height', 1)
-      //          .append("image")
-      //            .attr("xlink:href", 'img/bluemarble_2014089.jpg')
-      //            .attr('width', 712)
-      //            .attr('height', 712);
-      //
-      //     shape.attr('fill', 'url(#bg)');
-      //   };
-      //
-      //   return shape;
-      // };
 
     };
 

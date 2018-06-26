@@ -68,7 +68,8 @@
       data.push({
         'name': 'Everyone on Earth',
         'size': 7600000000,
-        'color': '#062551'
+        'color': '#062551',
+        'background': 'img/bluemarble_2014089.jpg'
       });
 
       return data;
