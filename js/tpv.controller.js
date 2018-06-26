@@ -17,7 +17,7 @@
       var data = [{
         'name': 'You',
         'size': 1,
-        'color': '#333333'
+        'color': '#999999'
       }];
 
       for (var key in args) {

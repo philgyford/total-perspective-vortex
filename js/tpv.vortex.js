@@ -30,7 +30,7 @@
     /**
      * Opacity for shapes that aren't currently 'in focus'.
      */
-    var unfocusedOpacity = 0.1;
+    var unfocusedOpacity = 0.05;
 
     /**
      * True when we're zooming in or out.

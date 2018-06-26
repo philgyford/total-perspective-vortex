@@ -3,6 +3,7 @@ body {
   margin: 0;
   font-family: Helvetica, Arial, sans-serif;
   font-weight: bold;
+  background: #000 url(../img/starmap.jpg) 0 0 repeat;
 }
 .container {
   width: 100vw;
@@ -41,23 +42,3 @@ body {
   cursor: default;
   visibility: hidden;
 }
-
-.shape{
-}
-.shape-container {
-  fill: none;
-}
-
-
-/* .js-shape-0 {
-  fill: red;
-}
-.js-shape-1 {
-  fill: green;
-}
-.js-shape-2 {
-  fill: blue;
-}
-.js-shape-3 {
-  fill: yellow;
-} */
