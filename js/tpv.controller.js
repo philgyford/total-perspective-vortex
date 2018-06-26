@@ -4,22 +4,7 @@
 
   tpv.controller = function() {
 
-    var data = [
-      {
-        'name': 'person',
-        'size': 1
-      },
-      {
-        'name': 'bbbbb',
-        'size': 30
-      },
-      {
-        'name': 'ccccc',
-        'size': 10000
-      },
-    ];
-
-    data = makeData();
+    var data = makeData();
 
     var chart = tpv.vortex().data(data);
 
@@ -31,35 +16,43 @@
       var args = getUrlArgs();
       var data = [{
         'name': 'You',
-        'size': 1
+        'size': 1,
+        'color': '#999999'
       }];
 
       for (var key in args) {
         var label;
+        var color;
         var size = args[key];
 
         switch (key) {
           case 'fb':
             label = 'Your Facebook friends';
+            color = '#4267b2';
             break;
           case 'twa':
             label = 'Your Twitter followers';
+            color = '#1da1f2';
             break;
           case 'twb':
             label = 'People you follow on Twitter';
+            color = '#2796dd';
             break;
           case 'iga':
             label = 'Your Instagram followers';
+            color = '#df3171';
             break;
           case 'igb':
-            label = 'People you follow in Instagram';
+            label = 'People you follow on Instagram';
+            color = '#ffb044';
             break;
         };
 
         if (label && isNumeric(size)) {
           data.push({
             'name': label,
-            'size': parseInt(size, 10)
+            'size': parseInt(size, 10),
+            'color': color
           });
         }
       };
@@ -67,8 +60,15 @@
       data.sort(sortBySize);
 
       data.push({
+        'name': 'Population of the UK',
+        'size': 65640000,
+        'color': '#66883f'
+      });
+
+      data.push({
         'name': 'Everyone on Earth',
-        'size': 7600000000
+        'size': 7600000000,
+        'color': '#062551'
       });
 
       return data;

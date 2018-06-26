@@ -172,7 +172,7 @@
 
         var dim = getShapeDimensions(idx);
 
-        var shape = drawShape(idx, dim['x'], dim['y'], dim['w'], dim['h']);
+        var shape = drawShape(idx, dim['x'], dim['y'], dim['w'], dim['h'], data[idx].color);
 
         shapes.unshift(shape);
       };
@@ -212,14 +212,15 @@
        * x, y, width and height.
        * Returns the object appended.
        */
-      function drawShape(idx, x, y, w, h) {
+      function drawShape(idx, x, y, w, h, color) {
         return svg.append('rect')
                     .classed('js-shape-'+idx, true)
                     .classed('shape', true)
                     .attr('x', x)
                     .attr('y', y)
                     .attr('width', w)
-                    .attr('height', h);
+                    .attr('height', h)
+                    .attr('fill', color);
       };
 
     };
