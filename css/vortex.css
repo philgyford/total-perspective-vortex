@@ -13,6 +13,19 @@ body {
   display: block;
 }
 
+.exitlink {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #ccc;
+  text-decoration: none;
+  text-transform: uppercase;
+  z-index: 10;
+}
+.exitlink:hover {
+  color: #fff;
+  text-decoration: underline;
+}
 
 .label-wrapper {
   position: absolute;
