@@ -4,35 +4,82 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-
-  <script>
-    document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
-  </script>
+  <title>Total Perspective Vortex: Preparation</title>
 
   <link rel="stylesheet" href="css/global.css">
-
 </head>
 <body>
-  <div class="nextprev-wrapper">
-    <a href="#" class="js-prev js-control nextprev nextprev-prev text is-disabled" title="Zoom in">▲</a>
-    <a href="#" class="js-next js-control nextprev nextprev-next text" title="Zoom out">▼</a>
-  </div>
 
-  <div class="label-wrapper">
-    <span class="js-label js-control label text"></span>
-  </div>
+  <main class="container">
+    <h1 class="page-title">Total Perspective Vortex</h1>
 
-  <div class="js-container container">
-  </div>
+    <form action="vortex/" method="get">
+
+      <h3 class="subtitle">Where you live</h3>
+
+      <p>
+        <label for="input-country" class="label">Where do you live?</label>
+        <select name="country" id="input-country" class="select">
+          <option value="">Select the country</option>
+        </select>
+      </p>
+
+      <h3 class="subtitle">Facebook</h3>
+
+      <p>
+        <label for="input-fb" class="label">How many friends do you have?</label>
+        <input type="number" min="0" name="fb" id="input-fb" class="input input--number">
+      </p>
+
+      <h3 class="subtitle">Twitter</h3>
+
+      <p>
+        <label for="input-twb" class="label">How many people do you follow?</label>
+        <input type="number" min="0" name="twb" id="input-twb" class="input input--number">
+      </p>
+
+      <p>
+        <label for="input-twa" class="label">How many followers do you have?</label>
+        <input type="number" min="0" name="twa" id="input-twa" class="input input--number">
+      </p>
+
+      <h3 class="subtitle">Instagram</h3>
+
+      <p>
+        <label for="input-igb" class="label">How many people do you follow?</label>
+        <input type="number" min="0" name="igb" id="input-igb" class="input input--number">
+      </p>
+
+      <p>
+        <label for="input-iga" class="label">How many followers do you have?</label>
+        <input type="number" min="0" name="iga" id="input-iga" class="input input--number">
+      </p>
+
+      <hr>
+
+      <button class="button">Enter the vortex</button>
+    </form>
+
+  </main>
 
   <script src="js/d3.min.js"></script>
-  <script src="js/d3-selection-multi.min.js"></script>
-  <script src="js/tpv.controller.js"></script>
-  <script src="js/tpv.vortex.js"></script>
+  <script src="js/tpv.form.js"></script>
 
   <script>
-    tpv.controller();
+    // Populate the countries select field.
+    d3.csv('data/countries.csv').then(function(data) {
+      d3.select('#input-country')
+        .selectAll('option')
+          .data(data)
+          .enter()
+        .append('option')
+          .attr('value', function(d) {
+            return d['code'];
+          })
+          .text(function(d) {
+            return d['name'];
+          });
+    });
   </script>
 
 </body>

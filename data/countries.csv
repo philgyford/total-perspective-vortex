@@ -1,0 +1,231 @@
+code,name,population
+AF,Afghanistan,36373
+AL,Albania,2934
+DZ,Algeria,42008
+AS,American Samoa,56
+AD,Andorra,77
+AO,Angola,30774
+AI,Anguilla,15
+AG,Antigua and Barbuda,103
+AR,Argentina,44689
+AM,Armenia,2934
+AW,Aruba,106
+AU,Australia,24772
+AT,Austria,8752
+AZ,Azerbaijan,9924
+BS,Bahamas,399
+BH,Bahrain,1567
+BD,Bangladesh,166368
+BB,Barbados,286
+BY,Belarus,9452
+BE,Belgium,11499
+BZ,Belize,382
+BJ,Benin,11486
+BM,Bermuda,61
+BT,Bhutan,817
+BO,Bolivia,11216
+BA,Bosnia and Herzegovina,3504
+BW,Botswana,2333
+BR,Brazil,210868
+VG,British Virgin Islands,32
+BN,Brunei,434
+BG,Bulgaria,7037
+BF,Burkina Faso,19752
+BI,Burundi,11216
+KH,Cambodia,16246
+CM,Cameroon,24678
+CA,Canada,36954
+CV,Cape Verde,553
+KY,Cayman Islands,62
+CF,Central African Republic,4737
+TD,Chad,15353
+CL,Chile,18197
+CN,China,1415046
+CO,Colombia,49465
+KM,Comoros,832
+CK,Cook Islands,17
+CR,Costa Rica,4953
+HR,Croatia,4165
+CU,Cuba,11489
+CW,Curacao,162
+CY,Cyprus,1189
+CZ,Czech Republic,10625
+DK,Denmark,5754
+DJ,Djibouti,971
+DM,Dominica,74
+DO,Dominican Republic,10883
+CD,DR Congo,84005
+EC,Ecuador,16863
+EG,Egypt,99376
+SV,El Salvador,6412
+GQ,Equatorial Guinea,1314
+ER,Eritrea,5188
+EE,Estonia,1307
+ET,Ethiopia,107535
+FK,Falkland Islands,3
+FO,Faroe Islands,49
+FJ,Fiji,912
+FI,Finland,5543
+FR,France,65233
+GF,French Guiana,290
+PF,French Polynesia,286
+GA,Gabon,2068
+GM,Gambia,2164
+GE,Georgia,3907
+DE,Germany,82293
+GH,Ghana,29464
+GI,Gibraltar,35
+GR,Greece,11142
+GL,Greenland,57
+GD,Grenada,108
+GP,Guadeloupe,449
+GU,Guam,166
+GT,Guatemala,17245
+GN,Guinea,13053
+GW,Guinea-Bissau,1907
+GY,Guyana,782
+HT,Haiti,11113
+HN,Honduras,9417
+HK,Hong Kong,7429
+HU,Hungary,9689
+IS,Iceland,338
+IN,India,1354052
+ID,Indonesia,266795
+IR,Iran,82012
+IQ,Iraq,39340
+IE,Ireland,4804
+IM,Isle of Man,85
+IL,Israel,8453
+IT,Italy,59291
+CI,Ivory Coast,24906
+JM,Jamaica,2899
+JP,Japan,127185
+JO,Jordan,9904
+KZ,Kazakhstan,18404
+KE,Kenya,50951
+KI,Kiribati,118
+KW,Kuwait,4197
+KG,Kyrgyzstan,6133
+LA,Laos,6961
+LV,Latvia,1930
+LB,Lebanon,6094
+LS,Lesotho,2263
+LR,Liberia,4854
+LY,Libya,6471
+LI,Liechtenstein,38
+LT,Lithuania,2876
+LU,Luxembourg,590
+MO,Macau,632
+MK,Macedonia,2085
+MG,Madagascar,26263
+MW,Malawi,19165
+MY,Malaysia,32042
+MV,Maldives,444
+ML,Mali,19108
+MT,Malta,432
+MH,Marshall Islands,53
+MQ,Martinique,385
+MR,Mauritania,4540
+MU,Mauritius,1268
+YT,Mayotte,260
+MX,Mexico,130759
+FM,Micronesia,106
+MD,Moldova,4041
+MC,Monaco,39
+MN,Mongolia,3122
+ME,Montenegro,629
+MS,Montserrat,5
+MA,Morocco,36192
+MZ,Mozambique,30529
+MM,Myanmar,53856
+NA,Namibia,2588
+NR,Nauru,11
+NP,Nepal,29624
+NL,Netherlands,17084
+NC,New Caledonia,280
+NZ,New Zealand,4750
+NI,Nicaragua,6285
+NE,Niger,22311
+NG,Nigeria,195875
+NU,Niue,2
+KP,North Korea,25611
+MP,Northern Mariana Islands,55
+NO,Norway,5353
+OM,Oman,4830
+PK,Pakistan,200814
+PW,Palau,22
+PS,Palestine,5053
+PA,Panama,4163
+PG,Papua New Guinea,8418
+PY,Paraguay,6897
+PE,Peru,32552
+PH,Philippines,106512
+PL,Poland,38105
+PT,Portugal,10291
+PR,Puerto Rico,3659
+QA,Qatar,2695
+CG,Republic of the Congo,5400
+RE,Reunion,883
+RO,Romania,19581
+RU,Russia,143965
+RW,Rwanda,12501
+KN,Saint Kitts and Nevis,56
+LC,Saint Lucia,180
+PM,Saint Pierre and Miquelon,6
+VC,Saint Vincent and the Grenadines,110
+WS,Samoa,198
+SM,San Marino,34
+ST,Sao Tome and Principe,209
+SA,Saudi Arabia,33554
+SN,Senegal,16294
+RS,Serbia,8762
+SC,Seychelles,95
+SL,Sierra Leone,7720
+SG,Singapore,5792
+SX,Sint Maarten,41
+SK,Slovakia,5450
+SI,Slovenia,2081
+SB,Solomon Islands,623
+SO,Somalia,15182
+ZA,South Africa,57398
+KR,South Korea,51164
+SS,South Sudan,12919
+ES,Spain,46397
+LK,Sri Lanka,20950
+SD,Sudan,41512
+SR,Suriname,568
+SZ,Swaziland,1391
+SE,Sweden,9983
+CH,Switzerland,8544
+SY,Syria,18284
+TW,Taiwan,23694
+TJ,Tajikistan,9107
+TZ,Tanzania,59091
+TH,Thailand,69183
+TL,Timor-Leste,1324
+TG,Togo,7991
+TK,Tokelau,1
+TO,Tonga,109
+TT,Trinidad and Tobago,1373
+TN,Tunisia,11659
+TR,Turkey,81917
+TM,Turkmenistan,5851
+TC,Turks and Caicos Islands,36
+TV,Tuvalu,11
+UG,Uganda,44271
+UA,Ukraine,44009
+AE,United Arab Emirates,9542
+GB,United Kingdom,66574
+US,United States,326767
+VI,United States Virgin Islands,105
+UY,Uruguay,3470
+UZ,Uzbekistan,32365
+VU,Vanuatu,282
+VA,Vatican City,1
+VE,Venezuela,32381
+VN,Vietnam,96491
+WF,Wallis and Futuna,12
+EH,Western Sahara,567
+YE,Yemen,28915
+ZM,Zambia,17609
+ZW,Zimbabwe,16913

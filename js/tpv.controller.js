@@ -4,21 +4,26 @@
 
   tpv.controller = function() {
 
-    var data = makeData();
+    var worldPopulation = 7600000000;
 
-    var chart = tpv.vortex().data(data);
+    // Will contain the data submitted to the chart.
+    var data = [];
 
-    chart();
+    // Will be the chart object.
+    var chart;
+
+    makeData();
 
 
-    // ?fb=200&twa=2700&twb=300&iga=89&igb=200
+    // ?fb=200&twa=2700&twb=300&iga=89&igb=200&country=US
     function makeData() {
       var args = getUrlArgs();
-      var data = [{
+
+      data.push({
         'name': 'You',
         'size': 1,
         'color': '#999999'
-      }];
+      });
 
       for (var key in args) {
         var label;
@@ -48,7 +53,7 @@
             break;
         };
 
-        if (label && isNumeric(size)) {
+        if (label && isNumeric(size) && parseInt(size, 10) > 0) {
           data.push({
             'name': label,
             'size': parseInt(size, 10),
@@ -57,23 +62,53 @@
         }
       };
 
-      data.sort(sortBySize);
+      // A bit fiddly because of having to wait for the CSV to load, or not.
+      // Either way, we finally want to call renderChart() when everything is
+      // ready.
+      if ('country' in args) {
 
-      data.push({
-        'name': 'Population of the UK',
-        'size': 65640000,
-        'color': '#66883f'
-      });
+        d3.csv('../data/countries.csv').then(function(countriesData) {
+          // Get the country whose code was submitted as args['country']
+          var countries = countriesData.filter(function(d) { return d.code == args['country']; });
 
+          if (countries.length > 0) {
+            data.push({
+              'name': 'Population of ' + countries[0].name,
+              'size': parseInt(countries[0].population * 1000, 10),
+              'color': '#66883f'
+            });
+
+            renderChart();
+          } else {
+            renderChart();
+          };
+        });
+      } else {
+        renderChart();
+      };
+
+    };
+
+    /**
+     * Once we've populated data, we just need to add the final datapoint
+     * and render the chart.
+     */
+    function renderChart() {
       data.push({
         'name': 'Everyone on Earth',
-        'size': 7600000000,
+        'size': worldPopulation,
         'color': '#bda390',
-        'background': 'img/bluemarble_2014089.jpg'
+        'background': '../img/bluemarble_2014089.jpg'
       });
 
-      return data;
+      // Sort so each item is in order, smallest first.
+      data.sort(sortBySize);
+
+      chart = tpv.vortex().data(data);
+
+      chart();
     };
+
 
     function isNumeric(n) {
       return !isNaN(parseFloat(n)) && isFinite(n);
