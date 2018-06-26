@@ -4,38 +4,59 @@
 
   tpv.vortex = function() {
 
-    // Can (and should) be changed using the chart.data() method.
-    // This will be replaced by any data passed to the chart.data() method:
-    // Each element should be like:
-    // {'size': 123, 'name': 'My label here'}
+    /**
+     * Can (and should) be changed using the chart.data() method.
+     * This will be replaced by any data passed to the chart.data() method:
+     * Each element should be like:
+     * {'size': 123, 'name': 'My label here'}
+     */
     var data = [];
 
+    /**
+     * Can be 'rect' or 'circle'.
+     * Can be changed using the chart.shapeType() method.
+     */
+    var shapeType = 'circle';
+
+    /**
+     * Which shape is currently the focused one? Its index within both
+     * shapes and data.
+     */
     var currentIdx = 0;
 
+    /**
+     * Will be an array of 'rect's or 'circle's, in the same order as their
+     * related data in the data array.
+     */
     var shapes = [];
 
     var transitionSpeed = 1000;
 
+    /**
+     * True when we're zooming in or out.
+     */
     var isAnimating = false;
+
+    // Start setting things up.
 
     var container = d3.select('.js-container');
 
+    // Total width and height of the browser window.
     var windowW = container.node().getBoundingClientRect().width;
     var windowH = container.node().getBoundingClientRect().height;
     var aspectRatio = windowW / windowH;
 
+    // Center point of the browser window.
     var centerX = windowW / 2;
     var centerY = windowH / 2;
 
-    var windowArea = windowW * windowH;
-
     function chart() {
 
+      // Fill the browser window.
       var svg = container.append('svg')
                   .classed('svg', true)
                   .attr('width', windowW)
                   .attr('height', windowH);
-
 
       // Create each shape, from the back (biggest) to the front (smallest).
       for (var n=data.length-1; n>=0; n--) {
@@ -92,21 +113,34 @@
        */
       function animateShapeForward(idx) {
 
+        // Run when each transition ends.
+        var finished = function(d) {
+          if (idx == 0) {
+            // Only need to do this when one of the shapes has finished!
+            showControls();
+            isAnimating = false;
+          };
+        };
+
+        var shape = shapes[idx];
         var dim = getShapeDimensions(idx);
 
-        shapes[idx].transition()
-            .duration(transitionSpeed)
-            .attr('x', dim['x'])
-            .attr('y', dim['y'])
-            .attr('width', dim['w'])
-            .attr('height', dim['h'])
-            .on('end', function(d) {
-              if (idx == 0) {
-                // Only need to do this when one of the shapes has finished!
-                showControls();
-                isAnimating = false;
-              };
-            });
+        if (shapeType == 'circle') {
+          // cx and cy stay the same.
+          shape.transition()
+              .duration(transitionSpeed)
+              .attr('r', dim['r'])
+              .on('end', finished);
+
+        } else {
+          shape.transition()
+              .duration(transitionSpeed)
+              .attr('x', dim['x'])
+              .attr('y', dim['y'])
+              .attr('width', dim['w'])
+              .attr('height', dim['h'])
+              .on('end', finished);
+        };
       };
 
       /**
@@ -171,8 +205,14 @@
       function addShape(idx) {
 
         var dim = getShapeDimensions(idx);
+        var shape;
 
-        var shape = drawShape(idx, dim['x'], dim['y'], dim['w'], dim['h'], data[idx].color);
+        if (shapeType == 'circle') {
+          shape = drawCircle(idx, dim['cx'], dim['cy'], dim['r'], data[idx].color);
+
+        } else {
+          shape = drawRect(idx, dim['x'], dim['y'], dim['w'], dim['h'], data[idx].color);
+        };
 
         shapes.unshift(shape);
       };
@@ -185,34 +225,62 @@
        * Returns an object.
        */
       function getShapeDimensions(idx) {
-        // How much bigger is this shape/pop compared to the first, smallest one?
-        // e.g. 1 for the first one!
+        // How much bigger is this shape compared to the current, focused, one?
+        // e.g. 1 for the currently-focused one.
         var scaleFactor = ( data[idx].size / data[currentIdx].size );
 
-        var area = windowArea * scaleFactor;
 
-        var h = Math.sqrt(area / aspectRatio);
-        var w = Math.round(area / h);
-        h = Math.round(h);
+        if (shapeType == 'circle') {
 
-        var x = -((w - windowW) / 2);
-        var y = -((h - windowH) / 2);
+          // The diameter of the currently-focused circle, so it fits:
+          var windowRadius = d3.min([windowW, windowH]) / 2;
 
-        return {
-          'x': x,
-          'y': y,
-          'w': w,
-          'h': h
-        }
+          // What the currently-focused shape's area should be.
+          // Like windowArea for rects.
+          var focusedArea = Math.PI * Math.pow(windowRadius, 2);
+
+          var shapeArea = focusedArea * scaleFactor;
+
+          var radius = Math.round(Math.sqrt((shapeArea / Math.PI)));
+
+          return {
+            'cx': centerX,
+            'cy': centerY,
+            'r': radius
+          };
+
+        } else {
+          // Rect.
+
+          // Total area of browser window.
+          // ie what the currently-focused shape's area should be.
+          var windowArea = windowW * windowH;
+
+          var shapeArea = windowArea * scaleFactor;
+
+          var h = Math.sqrt(shapeArea / aspectRatio);
+          var w = Math.round(shapeArea / h);
+          h = Math.round(h);
+
+          var x = -((w - windowW) / 2);
+          var y = -((h - windowH) / 2);
+
+          return {
+            'x': x,
+            'y': y,
+            'w': w,
+            'h': h
+          }
+        };
       };
 
       /**
-       * Draws a single shape in the svg.
-       * Needs the index of the shape in the shapes array, plus its
-       * x, y, width and height.
+       * Draws a single rect in the svg.
+       * Needs the index of the shape in the shapes array, plus its:
+       * x, y, (for the top-left point), width and height and fill color.
        * Returns the object appended.
        */
-      function drawShape(idx, x, y, w, h, color) {
+      function drawRect(idx, x, y, w, h, color) {
         return svg.append('rect')
                     .classed('js-shape-'+idx, true)
                     .classed('shape', true)
@@ -223,11 +291,30 @@
                     .attr('fill', color);
       };
 
+      function drawCircle(idx, cx, cy, r, color) {
+        return svg.append('circle')
+                    .classed('js-shape-'+idx, true)
+                    .classed('shape', true)
+                    .attr('cx', cx)
+                    .attr('cy', cy)
+                    .attr('r', r)
+                    .attr('fill', color);
+      };
     };
 
     chart.data = function(value) {
       if (!arguments.length) return data;
       data = value;
+      if (typeof render === 'function') render();
+      return chart;
+    };
+
+    /**
+     * Could be 'circle' or 'rect'.
+     */
+    chart.shapeType = function(value) {
+      if (!arguments.length) return shapeType;
+      shapeType = value;
       if (typeof render === 'function') render();
       return chart;
     };
