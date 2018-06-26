@@ -13,32 +13,77 @@ body {
   display: block;
 }
 
+
 .label-wrapper {
   position: absolute;
-  bottom: 30px;
+  bottom: 100px;
   left: 0;
   width: 100%;
   text-align: center;
   opacity: 1;
   padding: 0.3em 0;
 }
+.label {
+  border: 10px double #fff;
+  display: inline-block;
+}
+
 .text {
   background: #000;
   color: #fff;
-  padding: 0.3em 0.5em;
+  padding: 0.4em 0.6em;
 }
-.next {
+
+.nextprev-wrapper {
   position: absolute;
-  bottom: 10px;
-  right: 10px;
+  right: 30px;
+  bottom: 30px;
+  z-index: 10;
 }
-.prev {
+.nextprev {
   position: absolute;
-  bottom: 10px;
-  right: 100px;
+  right: 0;
+  bottom: 0;
+  border: 5px solid #fff;
+  width: 3em;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding-top: 0.45em;
+}
+.nextprev:hover {
+  background: #fff;
+  color: #000;
+  border-color: #000;
+  border-style: double;
+}
+.nextprev-next {
+}
+.nextprev-prev {
+  bottom: 60px;
 }
 .is-disabled {
-  text-decoration: none;
   cursor: default;
   visibility: hidden;
+}
+
+@media(max-width: 700px) {
+  .label-wrapper {
+    bottom: 160px;
+  }
+
+  .nextprev-wrapper {
+    width: 100%;
+    right: 0;
+  }
+  .nextprev {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    bottom: 0;
+  }
+  .nextprev-prev {
+    margin-bottom: 15px;
+  }
+
 }

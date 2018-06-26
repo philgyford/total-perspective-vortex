@@ -200,9 +200,16 @@
 
         var radius = Math.round(Math.sqrt((shapeArea / Math.PI)));
 
+        var cy = centerY;
+
+        if ((windowH / windowW) > 1.1) {
+          // If the window is portrait, then move the circle upwards a bit.
+          cy = centerY - ((windowH - windowW) / 2.5);
+        };
+
         return {
           'cx': centerX,
-          'cy': centerY,
+          'cy': cy,
           'r': radius
         };
       };
@@ -313,7 +320,8 @@
         };
 
         d3.select('.js-label')
-            .text(d.name + ': ' + format(d.size) + ' ' + noun);
+            .style('border-color', d.color)
+            .html(d.name + ': ' + format(d.size) + '&nbsp;' + noun);
 
         d3.selectAll('.js-control')
             .transition()
