@@ -9,6 +9,8 @@
     // Directory in which images for some data points are kept:
     var imagePath = '../img/';
 
+    var containerSelector = '.js-container';
+
     // Will contain the data submitted to the chart.
     var data = [];
 
@@ -109,7 +111,7 @@
       // Sort so each item is in order, smallest first.
       data.sort(sortBySize);
 
-      chart = tpv.vortex().data(data);
+      chart = tpv.vortex(containerSelector).data(data);
 
       chart();
     };

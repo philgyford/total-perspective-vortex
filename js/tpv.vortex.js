@@ -2,7 +2,7 @@
   'use strict';
   window.tpv = window.tpv || {};
 
-  tpv.vortex = function() {
+  tpv.vortex = function(selector) {
 
     /**
      * Can (and should) be changed using the chart.data() method.
@@ -39,7 +39,7 @@
 
     // Start setting things up.
 
-    var container = d3.select('.js-container');
+    var container = d3.select(selector);
 
     // Total width and height of the browser window.
     var windowW = container.node().getBoundingClientRect().width;
