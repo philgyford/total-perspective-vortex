@@ -7,8 +7,16 @@
     /**
      * Can (and should) be changed using the chart.data() method.
      * This will be replaced by any data passed to the chart.data() method:
+     *
      * Each element should be like:
-     * {'size': 123, 'name': 'My label here', 'color': '#ff0000'}
+     *    {'size': 123,
+     *     'name': 'My label here',
+     *     'color': '#ff0000'}
+     *
+     * Can also optionally have one or both of:
+     *    'background': 'img/example.png'
+     *    'stroke': '#fff'          (only used for circles, not rects)
+     *
      * Should be in order, with the smallest 'size' element first.
      */
     var data = [];
@@ -28,9 +36,14 @@
     var transitionSpeed = 1000;
 
     /**
-     * Opacity for shapes that aren't currently 'in focus'.
+     * Opacity for shapes smaller than the current one.
      */
-    var unfocusedOpacity = 0.2;
+    var innerOpacity = 0.2;
+
+    /**
+     * Opacity for shapes bigger than the current one.
+     */
+    var outerOpacity = 0;
 
     /**
      * True when we're zooming in or out.
@@ -85,7 +98,7 @@
             };
           })
           .attr('opacity', function(d, i) {
-            return i == currentIdx ? 1 : unfocusedOpacity;
+            return i == currentIdx ? 1 : outerOpacity;
           });
 
       // Need to create patterns for shapes that have image backgrounds:
@@ -172,6 +185,47 @@
       };
 
       /**
+       * Return an object containing cx, cy and r attributes for a circle.
+       */
+      function getCircleAttrs(d, i) {
+        // How much bigger is this shape compared to the current, focused, one?
+        // e.g. 1 for the currently-focused one.
+        var scaleFactor = ( d.size / data[currentIdx].size );
+
+        // The diameter of the currently-focused circle, so it fits:
+        var windowRadius = d3.min([windowW, windowH]) / 2;
+
+        // What the currently-focused shape's area should be.
+        // Like windowArea for rects.
+        var focusedArea = Math.PI * Math.pow(windowRadius, 2);
+
+        var shapeArea = focusedArea * scaleFactor;
+
+        var radius = Math.round(Math.sqrt((shapeArea / Math.PI)));
+
+        var cy = centerY;
+
+        if ((windowH / windowW) > 1.1) {
+          // If the window is portrait, then move the circle upwards a bit.
+          cy = centerY - ((windowH - windowW) / 2.5);
+        };
+
+        var attrs = {
+          'cx': centerX,
+          'cy': cy,
+          'r': radius
+        };
+
+        if (d.stroke) {
+          attrs['stroke'] = d.stroke;
+          attrs['stroke-width'] = 1;
+          attrs['stroke-opacity'] = 0.5;
+        };
+
+        return attrs;
+      };
+
+      /**
        * Return an object containing x, y, width and height attributes for a rect.
        */
       function getRectAttrs(d, i) {
@@ -198,39 +252,6 @@
           'width': w,
           'height': h
         }
-      };
-
-      /**
-       * Return an object containing cx, cy and r attributes for a circle.
-       */
-      function getCircleAttrs(d, i) {
-        // How much bigger is this shape compared to the current, focused, one?
-        // e.g. 1 for the currently-focused one.
-        var scaleFactor = ( d.size / data[currentIdx].size );
-
-        // The diameter of the currently-focused circle, so it fits:
-        var windowRadius = d3.min([windowW, windowH]) / 2;
-
-        // What the currently-focused shape's area should be.
-        // Like windowArea for rects.
-        var focusedArea = Math.PI * Math.pow(windowRadius, 2);
-
-        var shapeArea = focusedArea * scaleFactor;
-
-        var radius = Math.round(Math.sqrt((shapeArea / Math.PI)));
-
-        var cy = centerY;
-
-        if ((windowH / windowW) > 1.1) {
-          // If the window is portrait, then move the circle upwards a bit.
-          cy = centerY - ((windowH - windowW) / 2.5);
-        };
-
-        return {
-          'cx': centerX,
-          'cy': cy,
-          'r': radius
-        };
       };
 
       function startListeners() {
@@ -284,14 +305,14 @@
         };
 
         var getOpacity = function(d, i) {
-          var opacity = unfocusedOpacity;
+          // Default, for shapes bigger than the current one:
+          var opacity = outerOpacity;
+
           if (i == currentIdx) {
-            // Highlight current shape.
             opacity = 1;
           } else if (i > currentIdx) {
-            // Those we've zoomed past.
-            // A bit visible, but not much.
-            opacity = unfocusedOpacity * 3;
+            // Those that are smaller than the current one:
+            opacity = innerOpacity;
           };
 
           return opacity;

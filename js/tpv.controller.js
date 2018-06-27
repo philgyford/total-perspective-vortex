@@ -89,7 +89,8 @@
               'name': 'Population of ' + countries[0].name,
               'size': parseInt(countries[0].population * 1000, 10),
               'color': '#fff',
-              'background': imagePath + 'flags/' + countries[0].code.toLowerCase() + '.png'
+              'background': imagePath + 'flags/' + countries[0].code.toLowerCase() + '.png',
+              'stroke': '#fff'
             });
 
             renderChart();
