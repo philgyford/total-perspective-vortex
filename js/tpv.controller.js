@@ -102,7 +102,7 @@
       data.push({
         'name': 'Everyone on Earth',
         'size': worldPopulation,
-        'color': '#bda390',
+        'color': '#6587e3',
         'background': imagePath + 'bluemarble_2014089.jpg'
       });
 
