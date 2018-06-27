@@ -6,6 +6,9 @@
 
     var worldPopulation = 7600000000;
 
+    // Directory in which images for some data points are kept:
+    var imagePath = '../img/';
+
     // Will contain the data submitted to the chart.
     var data = [];
 
@@ -22,7 +25,8 @@
       data.push({
         'name': 'You',
         'size': 1,
-        'color': '#999999'
+        'color': '#fcf14e',
+        'background': imagePath + 'face.jpg'
       });
 
       for (var key in args) {
@@ -75,7 +79,8 @@
             data.push({
               'name': 'Population of ' + countries[0].name,
               'size': parseInt(countries[0].population * 1000, 10),
-              'color': '#66883f'
+              'color': '#fff',
+              'background': imagePath + 'flags/' + countries[0].code.toLowerCase() + '.png'
             });
 
             renderChart();
@@ -98,7 +103,7 @@
         'name': 'Everyone on Earth',
         'size': worldPopulation,
         'color': '#bda390',
-        'background': '../img/bluemarble_2014089.jpg'
+        'background': imagePath + 'bluemarble_2014089.jpg'
       });
 
       // Sort so each item is in order, smallest first.

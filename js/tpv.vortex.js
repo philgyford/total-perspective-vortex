@@ -30,7 +30,7 @@
     /**
      * Opacity for shapes that aren't currently 'in focus'.
      */
-    var unfocusedOpacity = 0.1;
+    var unfocusedOpacity = 0.2;
 
     /**
      * True when we're zooming in or out.
@@ -88,7 +88,10 @@
             return i == currentIdx ? 1 : unfocusedOpacity;
           });
 
-      svg.selectAll('pattern')
+      // Need to create patterns for shapes that have image backgrounds:
+      // Would be good to only generate patterns for d's that have 'background'
+      // but then it throws out the IDs which are based on index values.
+      var patterns = svg.selectAll('pattern')
           .data(data)
           .enter()
         .append('pattern')
@@ -97,15 +100,31 @@
             return 'bg-'+i;
           })
           .attr('width', 1)
-          .attr('height', 1)
-        .append("image")
-          .attr("xlink:href", function(d, i) {
+          .attr('height', 1);
+
+      // Then add a filled rect to each pattern, in case the image doesn't
+      // fill the shape:
+      patterns
+        .append('rect')
+          .attr('width', '100%')
+          .attr('height', '100%')
+          .attr('fill', function(d) {
+            if (d.color) {
+              return d.color;
+            };
+          });
+
+      // Then add the image for the background:
+      patterns
+        .append('image')
+          .attr("xlink:href", function(d) {
             if (d.background) {
               return d.background;
             };
           })
+          // Makes rectangular backgrounds fully fill the shape:
+          .attr('preserveAspectRatio', "xMidYMid slice")
           .attrs(getPatternAttrs);
-
 
       showControls();
 
@@ -131,7 +150,7 @@
         } else {
           return {
             'width': attrs['width'],
-            'height': attrs['height'],
+            'height': attrs['height']
           };
         };
       };
