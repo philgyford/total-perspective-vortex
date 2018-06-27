@@ -29,6 +29,13 @@
         'background': imagePath + 'face.jpg'
       });
 
+      data.push({
+        'name': 'Everyone on Earth',
+        'size': worldPopulation,
+        'color': '#6587e3',
+        'background': imagePath + 'bluemarble_2014089.jpg'
+      });
+
       for (var key in args) {
         var label;
         var color;
@@ -95,16 +102,9 @@
     };
 
     /**
-     * Once we've populated data, we just need to add the final datapoint
-     * and render the chart.
+     * Once we've populated data, sort it and render the chart.
      */
     function renderChart() {
-      data.push({
-        'name': 'Everyone on Earth',
-        'size': worldPopulation,
-        'color': '#6587e3',
-        'background': imagePath + 'bluemarble_2014089.jpg'
-      });
 
       // Sort so each item is in order, smallest first.
       data.sort(sortBySize);
