@@ -32,7 +32,6 @@
         <p>
           <label for="input-country" class="label">Where do you live?</label>
           <select name="country" id="input-country" class="select">
-            <option value="">Select the country</option>
           </select>
         </p>
 
@@ -83,6 +82,11 @@
   <script>
     // Populate the countries select field.
     d3.csv('data/countries.csv').then(function(data) {
+
+      data.unshift(
+        {code:'', name:'Select the country', population: 0}
+      );
+
       d3.select('#input-country')
         .selectAll('option')
           .data(data)

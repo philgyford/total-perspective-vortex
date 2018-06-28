@@ -1,4 +1,6 @@
 code,name,population
+GB,United Kingdom,66574
+US,United States,326767
 AF,Afghanistan,36373
 AL,Albania,2934
 DZ,Algeria,42008
@@ -215,8 +217,6 @@ TV,Tuvalu,11
 UG,Uganda,44271
 UA,Ukraine,44009
 AE,United Arab Emirates,9542
-GB,United Kingdom,66574
-US,United States,326767
 VI,United States Virgin Islands,105
 UY,Uruguay,3470
 UZ,Uzbekistan,32365
