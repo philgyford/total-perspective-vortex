@@ -6,7 +6,7 @@ This is a *sort of* [Total Perspective Vortex](http://hitchhikers.wikia.com/wiki
 
 ## Credits
 
-* Photo of the Earth from [earthobservatory.nasa.gov/ ](https://earthobservatory.nasa.gov/IOTD/view.php?id=84214)
+* Photo of the Earth from [earthobservatory.nasa.gov](https://earthobservatory.nasa.gov/IOTD/view.php?id=84214)
 
 * Stars background image from [spaceflight.nasa.gov](https://spaceflight.nasa.gov/gallery/images/station/crew-6/html/iss006e40544.html)
 
