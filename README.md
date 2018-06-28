@@ -2,7 +2,7 @@
 
 This is a *sort of* [Total Perspective Vortex](http://hitchhikers.wikia.com/wiki/Total_Perspective_Vortex) made using JavaScript (including [D3.js](https://d3js.org)).
 
-[You can try it out here.](https://www.gyford.com/misc/vortex/)
+[You can try it out here.](http://archive.gyford.com/2018/06/28/vortex/)
 
 ## Credits
 
