@@ -4,6 +4,8 @@ This is a *sort of* [Total Perspective Vortex](http://hitchhikers.wikia.com/wiki
 
 [You can try it out here.](http://archive.gyford.com/2018/06/28/vortex/)
 
+[You can read more about it here.](https://www.gyford.com/phil/writing/2018/06/28/total-perspective-vortex-d3js/)
+
 ## Credits
 
 * Photo of the Earth from [earthobservatory.nasa.gov](https://earthobservatory.nasa.gov/IOTD/view.php?id=84214)
