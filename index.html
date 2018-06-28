@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Total Perspective Vortex: Preparation</title>
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  </script>
 
   <link rel="stylesheet" href="css/global.css">
 </head>
@@ -23,48 +27,53 @@
 
       <hr>
 
-      <p>
-        <label for="input-country" class="label">Where do you live?</label>
-        <select name="country" id="input-country" class="select">
-          <option value="">Select the country</option>
-        </select>
-      </p>
+      <div class="js-only">
 
-      <h3 class="subtitle">Facebook</h3>
+        <p>
+          <label for="input-country" class="label">Where do you live?</label>
+          <select name="country" id="input-country" class="select">
+            <option value="">Select the country</option>
+          </select>
+        </p>
 
-      <p>
-        <label for="input-fb" class="label">How many friends do you have?</label>
-        <input type="number" min="0" name="fb" id="input-fb" class="input input--number">
-      </p>
+        <h3 class="subtitle">Facebook</h3>
 
-      <h3 class="subtitle">Twitter</h3>
+        <p>
+          <label for="input-fb" class="label">How many friends do you have?</label>
+          <input type="number" min="0" name="fb" id="input-fb" class="input input--number">
+        </p>
 
-      <p>
-        <label for="input-twb" class="label">How many people do you follow?</label>
-        <input type="number" min="0" name="twb" id="input-twb" class="input input--number">
-      </p>
+        <h3 class="subtitle">Twitter</h3>
 
-      <p>
-        <label for="input-twa" class="label">How many followers do you have?</label>
-        <input type="number" min="0" name="twa" id="input-twa" class="input input--number">
-      </p>
+        <p>
+          <label for="input-twb" class="label">How many people do you follow?</label>
+          <input type="number" min="0" name="twb" id="input-twb" class="input input--number">
+        </p>
 
-      <h3 class="subtitle">Instagram</h3>
+        <p>
+          <label for="input-twa" class="label">How many followers do you have?</label>
+          <input type="number" min="0" name="twa" id="input-twa" class="input input--number">
+        </p>
 
-      <p>
-        <label for="input-igb" class="label">How many people do you follow?</label>
-        <input type="number" min="0" name="igb" id="input-igb" class="input input--number">
-      </p>
+        <h3 class="subtitle">Instagram</h3>
 
-      <p>
-        <label for="input-iga" class="label">How many followers do you have?</label>
-        <input type="number" min="0" name="iga" id="input-iga" class="input input--number">
-      </p>
+        <p>
+          <label for="input-igb" class="label">How many people do you follow?</label>
+          <input type="number" min="0" name="igb" id="input-igb" class="input input--number">
+        </p>
 
-      <hr>
+        <p>
+          <label for="input-iga" class="label">How many followers do you have?</label>
+          <input type="number" min="0" name="iga" id="input-iga" class="input input--number">
+        </p>
 
-      <button class="button">Enter the vortex</button>
+        <hr>
+
+        <button class="button">Enter the vortex</button>
+      </div>
     </form>
+
+    <p class="no-js-only">Sorry, this requires JavaScript.</p>
 
   </main>
 

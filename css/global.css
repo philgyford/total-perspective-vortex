@@ -6,6 +6,12 @@ body {
   font-weight: bold;
 }
 
+.js .no-js-only {
+  display: none;
+}
+.no-js .js-only {
+  display: none;
+}
 a,
 a:visited {
   color: #fff;
@@ -15,10 +21,10 @@ a:visited {
 .container {
   max-width: 700px;
   margin: 0 auto 5rem auto;
+  text-align: center;
 }
 
 .page-title {
-  text-align: center;
   text-transform: uppercase;
   font-size: 2rem;
   border-bottom: 5px double #eee;
@@ -46,9 +52,6 @@ hr {
   font-size: 1.2rem;
 }
 
-form {
-  text-align: center;
-}
 form p {
   line-height: 2;
 }

@@ -5,6 +5,20 @@ body {
   font-weight: bold;
   background: #000 url(img/iss006e40544.jpg) 50% 50% repeat;
 }
+
+.js .no-js-only {
+  display: none;
+}
+.no-js .no-js-only {
+  margin: 6em;
+  text-align: center;
+  color: #ddd;
+}
+.no-js .js-only {
+  display: none;
+}
+
+
 .container {
   width: 100vw;
   height: 100vh;

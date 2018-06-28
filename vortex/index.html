@@ -1,27 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Total Perspective Vortex</title>
 
+  <script>
+    document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+  </script>
+
   <link rel="stylesheet" href="../css/vortex.css">
 </head>
 <body>
   <a class="exitlink" href="../">Exit</a>
 
-  <div class="nextprev-wrapper">
-    <a href="#" class="js-prev js-control nextprev nextprev-prev text is-disabled" title="Zoom in">▲</a>
-    <a href="#" class="js-next js-control nextprev nextprev-next text" title="Zoom out">▼</a>
+  <div class="js-only">
+    <div class="nextprev-wrapper">
+      <a href="#" class="js-prev js-control nextprev nextprev-prev text is-disabled" title="Zoom in">▲</a>
+      <a href="#" class="js-next js-control nextprev nextprev-next text" title="Zoom out">▼</a>
+    </div>
+
+    <div class="label-wrapper">
+      <span class="js-label js-control label text"></span>
+    </div>
+
+    <div class="js-container container">
+    </div>
   </div>
 
-  <div class="label-wrapper">
-    <span class="js-label js-control label text"></span>
-  </div>
-
-  <div class="js-container container">
-  </div>
+  <div class="no-js-only">Sorry, this requires JavaScript.</div>
 
   <script src="../js/d3.min.js"></script>
   <script src="../js/d3-selection-multi.min.js"></script>
